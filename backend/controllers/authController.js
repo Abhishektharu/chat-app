@@ -1,6 +1,6 @@
-// Temporary in-memory users data
-const users = []; // This will store users in memory (should use a real DB in production)
 
+import mongoose from "mongoose";
+import generateTokenAndSetCookie from "../jwt/generateToken.js";
 import User from "../models/model.js";
 import bcrypt from "bcryptjs";
 // Handle signup logic
@@ -33,9 +33,14 @@ export const signup = async (req, res) => {
       profilePic: gender == "male" ? boyProfilePic : girlProfilePic,
     });
 
-    await newUser.save();
-
+    
     if (newUser) {
+      
+      //generate the jwt token
+      generateTokenAndSetCookie(newUser._id, res);
+
+      await newUser.save();
+
       res.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,
@@ -52,19 +57,43 @@ export const signup = async (req, res) => {
 };
 
 // Handle login logic
-export const login = (req, res) => {
+export const login = async(req, res) => {
+try {
   const { username, password } = req.body;
 
-  // Check if the user exists
-  const user = users.find((user) => user.username === username);
-  if (!user) {
+  const user = await User.findOne({username});
+  const isCorrectPassword = await bcrypt.compare(password, user?.password || "" );
+
+  if (!user || !isCorrectPassword) {
     return res.status(400).json({ message: "Invalid credentials!" });
   }
 
-  // Check if the password matches (In production, compare hashed passwords)
-  if (user.password !== password) {
-    return res.status(400).json({ message: "Invalid credentials!" });
-  }
-
-  res.status(200).json({ message: "Login successful!", user });
+  //generate token and set cookie
+  generateTokenAndSetCookie(user._id, res);
+  
+  // res.status(200).json({ message: "Login successful!", user });
+  res.status(200).json({
+    message: "login successful! ",
+    _id: user._id,
+    fullName : user.fullName,
+    username : user.username,
+    profilePic : user.profilePic
+  })
+  console.log(`${user.username} connected.`)
+} catch (error) {
+  console.log("Auth Controller Error: " + error.message);
+  res.status(500).json({message: "Internal Server Error. "});
+}
 };
+
+export const logout =  (req, res) => {
+  try {
+    res.cookie("jwt", "", {maxAge: 0});
+    res.status(200).json({ message: "Logged out successfully" });
+
+  } catch (error) {
+    console.log("Error in logout controller", error);
+		res.status(500).json({ error: "Internal Server Error" });
+
+  }
+}
