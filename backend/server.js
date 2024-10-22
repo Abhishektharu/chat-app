@@ -6,6 +6,8 @@ import connectToMongoDB from './db/connectToMongoDB.js';
 
 import authRoutes from './routes/authRoutes.js';
 import messageRoutes from './routes/messageRoutes.js'
+import userRoute from './routes/userRoute.js'
+
 
 import cors from 'cors';
 
@@ -26,6 +28,9 @@ app.use(cookieParser()); // to get the cookies from jwt
 
 // Use the auth routes
 app.use('/api/auth', authRoutes);
+
+// use the user route
+app.use('/api/users', userRoute);
 
 // use the /message routes
 app.use('/api/messages', messageRoutes);
