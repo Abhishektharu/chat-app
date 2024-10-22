@@ -19,6 +19,8 @@ const protectRoute = async(req, res, next)=>{
         if (!user) {
 			return res.status(404).json({ error: "User not found" });
 		}
+        console.log("cookies : " + req.cookies);
+        
 
         req.user = user;
 
@@ -26,7 +28,7 @@ const protectRoute = async(req, res, next)=>{
     } catch (error) {
         console.log("Error protectRoute : " + error);
         res.status(500).json({message: "Internal server error"});
-        
+    
     }
 }
 
