@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useState } from 'react'
 
+//how to know user is logged in 
+//use localstorage to store the user's fullname username
+
 export const AuthContext = createContext();
 
 //define context;
