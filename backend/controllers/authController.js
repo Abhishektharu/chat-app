@@ -7,6 +7,8 @@ import bcrypt from "bcryptjs";
 export const signup = async (req, res) => {
   try {
     const { fullName, username, password, confirmPassword, gender } = req.body;
+    console.log(req.body);
+    
     // Hash the password using bcrypt
 
     if (password !== confirmPassword) {
@@ -51,7 +53,7 @@ export const signup = async (req, res) => {
       res.status(400).json({ error: "Invalid user data" });
     }
   } catch (error) {
-    console.log("Error in authController" + error);
+    console.log("Error in authController " + error);
     res.status(500).json({ error: "Internal Server Error." });
   }
 };
