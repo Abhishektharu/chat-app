@@ -7,11 +7,12 @@ const useLogin = () => {
 	const { setAuthUser } = UseAuthContext(); 
 
     const login = async (username, password) => {
-        console.log(username);
+        console.log("username" + username);
         
-        // const success = handleInputErrors(username, password);
+        const success = handleInputErrors(username, password);
 
-        // if (!success) return;
+        if (!success) console.log("not success");
+		;
         setLoading(true);
         try {
 			const res = await fetch("/api/auth/login", {
