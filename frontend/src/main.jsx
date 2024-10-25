@@ -9,7 +9,6 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthContextProvider >
       <SocketContextProvider>
-
     <App />
       </SocketContextProvider>
     </AuthContextProvider>
