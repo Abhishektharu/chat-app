@@ -8,13 +8,14 @@ import authRoutes from './routes/authRoutes.js';
 import messageRoutes from './routes/messageRoutes.js'
 import userRoute from './routes/userRoute.js'
 
+import { app , server} from './socket/socket.js';
 
 import cors from 'cors';
 
 dotenv.config(); 
 
 
-const app = express();
+// const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
@@ -37,7 +38,7 @@ app.use('/api/messages', messageRoutes);
 // Start the server
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     connectToMongoDB;
     console.log(`Server running on port http://localhost:${PORT}`);
 });

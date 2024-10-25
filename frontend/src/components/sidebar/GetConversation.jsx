@@ -1,17 +1,16 @@
 //will get the individual conversations listed in sidebar;
+import { useSocketContext } from "../../context/SocketContext";
 import useConversation from "../../zustand/useConversation";
 
 const GetConversation = ({conversation, lastIndex}) => {
 	// console.log(conversation);
 	const {selectedConversation, setSelectedConversation} = useConversation();
-	// console.log(conversation);
-	// console.log(selectedConversation);
-	
-	
-	// console.log(selectedConversation);
-	// console.log(setSelectedConversation);
 	const isSelected = selectedConversation?._id === conversation._id;
 	// console.log(isSelected);
+	const { onlineUsers } = useSocketContext();
+	// console.log(onlineUsers);
+	
+	const isOnline = onlineUsers.includes(conversation._id);
 	
   return (
       		<>
@@ -21,7 +20,7 @@ const GetConversation = ({conversation, lastIndex}) => {
 			`}
 				onClick={() => setSelectedConversation(conversation)}
 			>
-      				<div className='avatar online'>
+      				<div className={`avatar ${isOnline ? "online" : ""}`}>
       					<div className='w-12 rounded-full'>
       						<img
       							src={conversation.profilePic}
