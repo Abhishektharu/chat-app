@@ -9,9 +9,7 @@ const Message = ({ message }) => {
   const fromMe = message.senderId === authUser._id;
   const chatClassName = fromMe ? "chat-end" : "chat-start";
   const formattedTime = extractTime(message.createdAt);
-  const profilePic = fromMe
-    ? authUser.profilePic
-    : selectedConversation?.profilePic;
+  const profilePic = fromMe ? "": selectedConversation?.profilePic;
   const bubbleBgColor = fromMe ? "bg-blue-500" : "";
 
   // console.log(message);
@@ -21,7 +19,7 @@ const Message = ({ message }) => {
       <div className={`chat ${chatClassName}`}>
 			<div className='chat-image avatar'>
 				<div className='w-10 rounded-full'>
-					<img alt='Tailwind CSS chat bubble component' src={profilePic} />
+					<img alt='' src={profilePic} />
 				</div>
 			</div>
 			<div className={`chat-bubble text-white ${bubbleBgColor}  pb-2`}>{message.message}</div>
