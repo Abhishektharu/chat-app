@@ -67,7 +67,7 @@ try {
   const isCorrectPassword = await bcrypt.compare(password, user?.password || "" );
 
   if (!user || !isCorrectPassword) {
-    return res.status(400).json({ message: "Invalid credentials!" });
+    return res.status(400).json({ error: "Invalid User Credentials!" });
   }
 
   //generate token and set cookie
@@ -84,7 +84,7 @@ try {
   console.log(`${user.username} connected.`)
 } catch (error) {
   console.log("Auth Controller Error: " + error.message);
-  res.status(500).json({message: "Internal Server Error. "});
+  res.status(500).json({error: "Internal Server Error. "});
 }
 };
 
